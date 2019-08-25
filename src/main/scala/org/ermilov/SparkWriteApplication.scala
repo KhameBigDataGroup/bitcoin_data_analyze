@@ -1,8 +1,7 @@
 package org.ermilov
 
+import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.{SparkConf, SparkContext}
-import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.streaming.dstream.DStream
 
 
@@ -15,19 +14,21 @@ object SparkWriteApplication extends App {
     .set("spark.cores.max", "8")
     .set("spark.executor.instances", "1")
 
+  val spark = SparkSession
+      .builder()
+//      .master("local")
+      .config(config)
+//      .appName("App")
+      .getOrCreate()
 
   val sc = new SparkContext(config)
 
-//  val ssc = new StreamingContext(sc, Seconds(2))
-//
-//  ssc.checkpoint("/bitcoin/checkpoint")
-
-
-  //Kafka Stream
 //  val stream: DStream[String] = KafkaConsumerFactory.createKafkaMessageStream(Array("bitcoin"), ssc).map(record => record.value())
 //  stream.saveAsTextFiles("hdfs://namenode:8020/bitcoin/topic")
-//  ssc.start()
-//  ssc.awaitTermination()
-//  ssc.stop()
+
+    val loadRdds: DataFrame = spark.read.json("hdfs://localhost:8020//tmp/numbers-as-text")
+    loadRdds.show()
+
+
 }
 
