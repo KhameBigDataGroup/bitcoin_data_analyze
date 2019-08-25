@@ -15,19 +15,19 @@ object SparkWriteApplication extends App {
     .set("spark.executor.instances", "1")
 
   val spark = SparkSession
-      .builder()
-//      .master("local")
-      .config(config)
-//      .appName("App")
-      .getOrCreate()
+    .builder()
+    //      .master("local")
+    .config(config)
+    //      .appName("App")
+    .getOrCreate()
 
   val sc = new SparkContext(config)
 
-//  val stream: DStream[String] = KafkaConsumerFactory.createKafkaMessageStream(Array("bitcoin"), ssc).map(record => record.value())
-//  stream.saveAsTextFiles("hdfs://namenode:8020/bitcoin/topic")
+  //  val stream: DStream[String] = KafkaConsumerFactory.createKafkaMessageStream(Array("bitcoin"), ssc).map(record => record.value())
+  //  stream.saveAsTextFiles("hdfs://namenode:8020/bitcoin/topic")
 
-    val loadRdds: DataFrame = spark.read.json("hdfs://namenode:8020/user/db/test/seyed_test")
-    loadRdds.show()
+  val loadRdds = spark.read.text("hdfs://namenode:8020/user/db/test/bitcoin-test")
+  loadRdds.show()
 
 
 }
