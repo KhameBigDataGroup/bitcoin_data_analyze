@@ -26,7 +26,7 @@ object SparkWriteApplication extends App {
 //  val stream: DStream[String] = KafkaConsumerFactory.createKafkaMessageStream(Array("bitcoin"), ssc).map(record => record.value())
 //  stream.saveAsTextFiles("hdfs://namenode:8020/bitcoin/topic")
 
-    val loadRdds: DataFrame = spark.read.json("hdfs://localhost:8020//tmp/numbers-as-text")
+    val loadRdds: DataFrame = spark.read.json("hdfs://namenode:8020/user/db/test/seyed_test")
     loadRdds.show()
 
 
